@@ -19,11 +19,11 @@ Shader::Shader(const std::string& fileName)
 	// following our own implicit file-naming conventions;
 
 	this->_shaders[0] = CreateShader(
-		GetShaderFileAsText(fileName + ".vs"),
+		GetShaderFileAsText(fileName + ".vert.gsh"),
 		GL_VERTEX_SHADER);
 	
 	this->_shaders[1] = CreateShader(
-		GetShaderFileAsText(fileName + ".fs"),
+		GetShaderFileAsText(fileName + ".frag.gsh"),
 		GL_FRAGMENT_SHADER);
 
 	// Ask OpenGL to associated each shader with our
@@ -35,6 +35,7 @@ Shader::Shader(const std::string& fileName)
 	}
 
 	glBindAttribLocation(this->_program, 0, "position");
+	glBindAttribLocation(this->_program, 1, "texCoord");
 
 	glLinkProgram(this->_program);
 
