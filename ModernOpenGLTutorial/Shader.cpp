@@ -3,6 +3,7 @@
 
 #include "Shader.h"
 #include "Transform.h"
+#include "Camera.h"
 
 // Forward-declare some static utility functions
 
@@ -61,9 +62,9 @@ void Shader::Bind()
 	glUseProgram(this->_program);
 }
 
-void Shader::Update(const Transform& transform)
+void Shader::Update(const Camera& camera, const Transform& transform)
 {
-	glm::mat4 model = transform.getModelMatrix();
+	glm::mat4 model = camera.getViewProjection() * transform.getModel();
 
 	glUniformMatrix4fv(this->_uniforms[TRANSFORM_UNIFORM], 1, GL_FALSE, &model[0][0]);
 }

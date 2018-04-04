@@ -1,12 +1,18 @@
+#include <glm/glm.hpp>
+
 #include "Display.h"
 #include "Mesh.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "Transform.h"
+#include "Camera.h"
+
+#define WIDTH 800
+#define HEIGHT 600
 
 int main(int argc, char** argv)
 {
-	Display display(800, 600, "SDL 2.0.8 Window Demo");
+	Display display(WIDTH, HEIGHT, "SDL 2.0.8 Window Demo");
 	
 	Vertex vertices[] = {
 		Vertex(
@@ -29,6 +35,8 @@ int main(int argc, char** argv)
 	
 	Texture texture("./res/bricks.jpg");
 
+	Camera camera(glm::vec3(0, 0, -2), 70.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
+
 	Transform transform;
 
 	float counter = 0.0f;
@@ -44,11 +52,16 @@ int main(int argc, char** argv)
 
 		texture.Bind(0);
 
-		transform.getPos().x = sinf(counter);
-		transform.getRot().z = counter;
-		transform.getScale() = glm::vec3(cosCounter, cosCounter, cosCounter);
+		//transform.getPos().x = sinf(counter);
+		//transform.getPos().z = cosf(counter);
 		
-		shader.Update(transform);
+		transform.getRot().x = counter;
+		transform.getRot().y = counter;
+		transform.getRot().z = counter;
+		
+		// transform.getScale() = glm::vec3(cosCounter, cosCounter, cosCounter);
+		
+		shader.Update(camera, transform);
 		
 		mesh.Draw();
 		

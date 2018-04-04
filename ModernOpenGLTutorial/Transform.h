@@ -17,7 +17,7 @@ public:
 		_rot(rot),
 		_scale(scale) {}
 
-	inline glm::mat4 getModelMatrix() const
+	inline glm::mat4 getModel() const
 	{
 		glm::mat4 posMatrix = glm::translate(this->_pos);
 		
