@@ -8,11 +8,15 @@ attribute vec2 texCoord;
 
 varying vec2 texCoord0;
 
+uniform mat4 transform;
+
 void main()
 {
-	gl_Position = vec4(position, 1.0);
-	//.xyz = position;
-	//gl_Position.w = 1;
-
+	// Note that the fourth component of the vec4 acts as
+	// a scalar coefficient for the translation 
+	// transformation;
+	
+	gl_Position = transform * vec4(position, 1.0);
+	
 	texCoord0 = texCoord;
 }

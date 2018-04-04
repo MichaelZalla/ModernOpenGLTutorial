@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "Shader.h"
+#include "Transform.h"
 
 // Forward-declare some static utility functions
 
@@ -45,11 +46,26 @@ Shader::Shader(const std::string& fileName)
 
 	CheckShaderError(this->_program, GL_VALIDATE_STATUS, true, "Error: Program validation failed: ");
 
+	// Get the 'transform' uniform's (CPU) memory location 
+	// so we can write to it;
+	
+	// @TODO(mzalla) Technically _uniforms stores GLuints; check 
+	// whether getGetUniformLocation is giving us a pointer value;
+
+	this->_uniforms[TRANSFORM_UNIFORM] = glGetUniformLocation(this->_program, "transform");
+
 }
 
 void Shader::Bind()
 {
 	glUseProgram(this->_program);
+}
+
+void Shader::Update(const Transform& transform)
+{
+	glm::mat4 model = transform.getModelMatrix();
+
+	glUniformMatrix4fv(this->_uniforms[TRANSFORM_UNIFORM], 1, GL_FALSE, &model[0][0]);
 }
 
 Shader::~Shader()
@@ -63,9 +79,9 @@ Shader::~Shader()
 	glDeleteProgram(this->_program);
 }
 
-void Shader::operator=(const Shader& other)
-{
-}
+// void Shader::operator=(const Shader& other)
+// {
+// }
 
 GLuint CreateShader(const std::string& text, GLenum shaderType)
 {
