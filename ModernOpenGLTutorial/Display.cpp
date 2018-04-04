@@ -11,6 +11,7 @@ Display::Display(int width, int height, const std::string & title)
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	this->_window = SDL_CreateWindow(
@@ -35,6 +36,12 @@ Display::Display(int width, int height, const std::string & title)
 	}
 
 	this->_isClosed = false;
+
+	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_CULL_FACE);
+
+	glCullFace(GL_BACK);
 }
 
 bool Display::isClosed()
@@ -60,7 +67,10 @@ void Display::Update()
 void Display::Clear(float r, float g, float b, float a)
 {
 	glClearColor(r, g, b, a);
+	
 	glClear(GL_COLOR_BUFFER_BIT);
+	
+	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 Display::~Display()

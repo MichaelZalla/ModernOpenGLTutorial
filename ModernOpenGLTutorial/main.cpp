@@ -14,6 +14,7 @@ int main(int argc, char** argv)
 {
 	Display display(WIDTH, HEIGHT, "SDL 2.0.8 Window Demo");
 	
+	/*
 	Vertex vertices[] = {
 		Vertex(
 			glm::vec3(-0.5, -0.5, 0),
@@ -28,14 +29,26 @@ int main(int argc, char** argv)
 			glm::vec2(1.0, 1.0)
 		)
 	};
+
+	unsigned int indices[] = {
+		0,
+		1,
+		2,
+	};
+	*/
 	
-	Mesh mesh(vertices, sizeof(vertices) / sizeof(vertices[0]));
+	//Mesh mesh(
+	//	vertices, sizeof(vertices) / sizeof(vertices[0]),
+	//	indices, sizeof(indices) / sizeof(indices[0])
+	//);
+
+	Mesh mesh("./res/lampost.obj");
 
 	Shader shader("./res/basicShader");
 	
 	Texture texture("./res/bricks.jpg");
 
-	Camera camera(glm::vec3(0, 0, -2), 70.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
+	Camera camera(glm::vec3(0, 0, -16), 70.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
 
 	Transform transform;
 
@@ -52,22 +65,24 @@ int main(int argc, char** argv)
 
 		texture.Bind(0);
 
-		//transform.getPos().x = sinf(counter);
-		//transform.getPos().z = cosf(counter);
+		transform.getPos().x = sinf(counter);
+		transform.getPos().z = cosf(counter);
 		
 		transform.getRot().x = counter;
 		transform.getRot().y = counter;
 		transform.getRot().z = counter;
 		
-		// transform.getScale() = glm::vec3(cosCounter, cosCounter, cosCounter);
+		transform.getScale() = glm::vec3(cosCounter, cosCounter, cosCounter);
 		
 		shader.Update(camera, transform);
 		
+		// mesh.Draw();
+
 		mesh.Draw();
 		
 		display.Update();
 
-		counter += 0.01f;
+		counter += 0.003f;
 	}
 
 	return 0;

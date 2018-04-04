@@ -38,6 +38,7 @@ Shader::Shader(const std::string& fileName)
 
 	glBindAttribLocation(this->_program, 0, "position");
 	glBindAttribLocation(this->_program, 1, "texCoord");
+	glBindAttribLocation(this->_program, 2, "normal");
 
 	glLinkProgram(this->_program);
 
